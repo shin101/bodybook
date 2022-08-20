@@ -17,11 +17,11 @@ APP DB: PostgreSQL
 [WTForms - alchemy](https://wtforms-alchemy.readthedocs.io/en/latest/ )
 
 ### What does your database schema look like? 
-![schema](https://github.com/shin101/bodybook/blob/main/schema.png?raw=true)
+![schema](https://github.com/shin101/bodybook/blob/main/Bodybook_schema.png?raw=true)
 
 
 ### Is there any sensitive information you need to secure? 
-Login, password, authentication. Users must be logged in to see posts. Passwords will be stored with Flask Bcrypt. I will also be using the [Flask-Login add-on] (https://flask-login.readthedocs.io/en/latest/) 
+Login, password, authentication. Users must be logged in to see posts. Passwords will be stored with Flask Bcrypt. I will also be using the [Flask-Login add-on](https://flask-login.readthedocs.io/en/latest/) 
 
 
 ### What functionality will your app include? 
@@ -32,4 +32,4 @@ Landing page that shows a sign up page as well as a log in link in the nav bar f
 Once a user is logged in they will be taken to a page where they can view their own profile. From this page there are links to check their friend list as well as make a post. 
 
 ### What features make your site more than CRUD? Do you have any stretch goals?
-May add a delete and add friend feature
+May add a delete and add friend feature. Add access feature so that user's page can only be accessed once you are friends with the individual
