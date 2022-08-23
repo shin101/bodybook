@@ -1,0 +1,143 @@
+from flask import Flask, request, render_template, redirect, flash, g, session
+from models import db, connect_db, User, Post
+from forms import CreateUserForm, LoginForm, PostForm
+from flask_login import LoginManager
+from flask_mail import Message
+from flask_bcrypt import Bcrypt
+from sqlalchemy.exc import IntegrityError
+from seed import setup
+
+
+
+CURR_USER_KEY = "curr_user"
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///bodybook'
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+app.config['SECRET_KEY'] = 'capstone_project'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+connect_db(app)
+# setup()
+
+##############################################################################
+
+@app.before_request
+def add_user_to_g():
+    """If we're logged in, add curr user to Flask global."""
+    if CURR_USER_KEY in session:
+        g.user = User.query.get(session[CURR_USER_KEY])
+    else:
+        g.user = None
+
+def do_login(user):
+    """Log in user"""
+    session[CURR_USER_KEY] = user.id
+
+def do_logout():
+    """Log out user"""
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY]
+
+@app.route('/signup',methods=['GET','POST'])
+def signup():
+    """Handle user signup"""
+
+    form = CreateUserForm()
+    # if request.method == 'POST' and form.validate() == True:
+    if form.validate_on_submit():
+        try:
+            user = User.signup(
+                name = form.name.data,
+                username = form.username.data,
+                email=form.email.data,
+                password=form.password.data)
+            db.session.commit()
+            flash('new user added')
+            
+            # msg = Message("Welcome to Bodybook!",sender="kendras0127@gmail.com", recipients=user.email)
+            # mail.send(msg)
+        except IntegrityError:
+            flash("Username already taken", 'danger')
+            return render_template('/user/signup.html', form=form)
+        do_login(user)
+        return redirect("/login")
+
+    else:
+        return render_template('/user/signup.html',form=form)
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+        user = User.authenticate(email,password)
+
+        if user:
+            do_login(user)
+            flash(f'welcome back, {user.name}')
+            return redirect(f"/users/{user.id}")
+        else:
+            form.email.errors = ['Invalid credential']
+
+    return render_template('/user/login.html', form=form)
+
+@app.route('/users/<int:user_id>', methods=['GET','POST'])
+def feed(user_id):
+    user = User.query.get_or_404(user_id)
+    # all_posts = Post.query.all()
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    form = PostForm()
+    posts = (Post.query.limit(10).all())
+
+    if form.validate_on_submit():
+        status = Post(status=form.status.data)
+        g.user.posts.append(status)
+        db.session.commit()
+
+        return redirect(f'/users/{g.user.id}')
+
+    return render_template("/user/feed.html", form=form, user=user, posts=posts)
+
+
+@app.route('/users/<int:user_id>/detail')
+def show_profile_page(user_id):
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/login")
+    
+    user = User.query.get_or_404(user_id)
+    return render_template('/user/detail.html', user=user)
+
+
+@app.route('/logout')
+def logout():
+    do_logout()
+    flash("You have been logged out")
+    return redirect ('/login')
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+##############################################################################
+
+
+
+##############################################################################
+# Homepage
+
+@app.route('/')
+def homepage():
+    form = LoginForm()
+    return redirect('/signup')

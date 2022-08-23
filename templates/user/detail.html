@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="/logout">Log Out</a>
+<a href="/users/{{user.id}}">Feed</a>
+<h1>Profile Page</h1>
+
+<img src="{{user.picture}}" width="200" height="200">
+<p>{{user.name}}</p>
+
+
+<h2>Friends List</h2>
+
+<h2>My Posts</h2>
+<li>{{user.posts}}</li>
+
+
+
+
+{% endblock %}
+

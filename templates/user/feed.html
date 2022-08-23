@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="/logout">Log Out</a>
+<a href="/users/{{user.id}}/detail">Profile</a>
+<h1>Feed</h1>
+
+
+
+<form method="POST">
+    {{ form.csrf_token }}
+    {{ form.status(placeholder="What's on your mind?") }}
+    <button>Add</button>
+</form>
+
+{% for post in posts %}
+<li>
+    <img src="{{user.picture}}" alt="user profile photo" width="30" height="30">
+    <a href="/users/{{user.id}}">{{user.name}}</a>
+    <p>{{post.status}}</p>
+</li>
+
+{% endfor %}
+
+
+{% endblock %}
