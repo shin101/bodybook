@@ -4,16 +4,37 @@
 <a href="/logout">Log Out</a>
 <a href="/users/{{user.id}}">Feed</a>
 <h1>Profile Page</h1>
+<p>
+<img src="{{user.big_pic}}" width="200" height="200"></p>
 
-<img src="{{user.picture}}" width="200" height="200">
-<p>{{user.name}}</p>
+{{user.name}} {{user.last_name}}
+
+{% if user.id not in friend_list and user.id!=g.user.id %}
+<form method="POST" action="/users/friend_request/{{ user.id }}">
+    <button>Add Friend</button></form>
+{% endif %}
 
 
-<h2>Friends List</h2>
 
-<h2>My Posts</h2>
-<li>{{user.posts}}</li>
+{% if g.user.id == user.id %}
+<table border="1">
+    {% for entry in friend_list %}
+        <td>
+            <a href="/users/{{entry.friend_of_id}}/detail">{{entry.friend.name}}</a>
+            <img src="{{entry.friend.picture}}">
+            {{entry.friend.country}}
+            <form method="POST" action="/users/unfriend/{{ entry.friend_of_id }}">
+        <button>Unfriend</button></form>
+        </td>
+    {% endfor %}
+</table>
+{% endif %}
 
+
+<h2>My Posts ({{user.posts | length}})</h2>
+{% for post in posts %}
+<li>{{post.status}}</li>
+{% endfor %}
 
 
 

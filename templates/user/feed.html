@@ -15,12 +15,15 @@
 
 {% for post in posts %}
 <li>
-    <img src="{{user.picture}}" alt="user profile photo" width="30" height="30">
-    <a href="/users/{{user.id}}">{{user.name}}</a>
+    <img src="{{post.author.picture}}" alt="user profile photo" width="30" height="30">
+    <a href="/users/{{post.author.id}}/detail">{{post.author.name}}</a>
     <p>{{post.status}}</p>
+    <p style="font-size:10px;">{{post.timestamp.strftime ('%d %B %Y at %H %M')}}</p>
 </li>
 
 {% endfor %}
+
+<h3>Suggested Friends</h3>
 
 
 {% endblock %}

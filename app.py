@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, flash, g, session
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, FriendList
 from forms import CreateUserForm, LoginForm, PostForm
 from flask_login import LoginManager
 from flask_mail import Message
@@ -73,7 +73,7 @@ def signup():
 def login():
 
 
-    form = LoginForm()
+    form = LoginForm(obj=g.user)
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
@@ -98,7 +98,7 @@ def feed(user_id):
         return redirect("/")
     
     form = PostForm()
-    posts = (Post.query.limit(10).all())
+    posts = (Post.query.order_by(Post.timestamp.desc()).limit(10).all())
 
     if form.validate_on_submit():
         status = Post(status=form.status.data)
@@ -117,7 +117,45 @@ def show_profile_page(user_id):
         return redirect("/login")
     
     user = User.query.get_or_404(user_id)
-    return render_template('/user/detail.html', user=user)
+    posts = Post.query.filter_by(author_id=user_id).all()
+    friend_list = FriendList.query.filter_by(user_id=g.user.id).all()
+
+    return render_template('/user/detail.html', user=user, friend_list=friend_list, posts=posts)
+
+
+@app.route('/users/friend_request/<int:user_id>/', methods=['POST'])
+def send_friend_request(user_id):
+    """add new friend"""
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/login")
+    
+    # user = User.query.get_or_404(user_id)
+
+    if not FriendList.query.filter_by(user_id=g.user.id, friend_of_id=user_id).first():
+        db.session.add_all([
+            FriendList(user_id=g.user.id, friend_of_id=user_id),
+            FriendList(user_id=user_id, friend_of_id=g.user.id),
+        ])
+        db.session.commit()
+        flash('friend request sent!')
+
+    return redirect(f'/users/{g.user.id}/detail')
+
+
+@app.route('/users/unfriend/<int:user_id>', methods=['POST'])
+def unfriend(user_id):
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    breakpoint()
+    if matching_friends := FriendList.query.filter((FriendList.user_id == g.user.id and FriendList.friend_of_id == user_id) | (FriendList.user_id == user_id and FriendList.friend_of_id == g.user.id)).all():
+      
+        db.session.commit()
+        flash('friend request sent!')
+
+    return redirect(f"/users/{g.user.id}/detail")
 
 
 @app.route('/logout')
