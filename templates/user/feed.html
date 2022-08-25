@@ -1,17 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+
+
 <a href="/logout">Log Out</a>
-<a href="/users/{{user.id}}/detail">Profile</a>
+<a href="/users/{{g.user.id}}/detail">Profile</a>
+
+<div class="container text-center">
 <h1>Feed</h1>
-
-
 
 <form method="POST">
     {{ form.csrf_token }}
+
     {{ form.status(placeholder="What's on your mind?") }}
-    <button>Add</button>
+    <button class="btn btn-outline-info">Add</button>
 </form>
+
+
 
 {% for post in posts %}
 <li>
@@ -19,11 +25,18 @@
     <a href="/users/{{post.author.id}}/detail">{{post.author.name}}</a>
     <p>{{post.status}}</p>
     <p style="font-size:10px;">{{post.timestamp.strftime ('%d %B %Y at %H %M')}}</p>
+    {% if post.author.id==g.user.id %}
+    <button action="/status/<int:post_id>/delete" class="btn btn-sm">Delete</button>
+    {% endif %}
 </li>
-
 {% endfor %}
 
+</div>
+
+<div class="container text-right">
 <h3>Suggested Friends</h3>
-
-
+{% for user in users %}
+{{user.name}}
+{% endfor %}
+</div>
 {% endblock %}

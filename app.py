@@ -1,10 +1,11 @@
-from flask import Flask, request, render_template, redirect, flash, g, session
+from flask import Flask, request, render_template, redirect, flash, g, session, url_for
 from models import db, connect_db, User, Post, FriendList
-from forms import CreateUserForm, LoginForm, PostForm
+from forms import CreateUserForm, LoginForm, PostForm, UserEditForm
 from flask_login import LoginManager
 from flask_mail import Message
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
+import os
 from seed import setup
 
 
@@ -16,12 +17,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///bodybook'
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = 'capstone_project'
+# app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
+
+
+# configure_uploads(app, photos)
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 connect_db(app)
-# setup()
+setup()
 
 ##############################################################################
 
@@ -116,11 +122,13 @@ def show_profile_page(user_id):
         flash("Access unauthorized.", "danger")
         return redirect("/login")
     
+    form = UserEditForm()
     user = User.query.get_or_404(user_id)
+    users = User.query.all()
     posts = Post.query.filter_by(author_id=user_id).all()
     friend_list = FriendList.query.filter_by(user_id=g.user.id).all()
 
-    return render_template('/user/detail.html', user=user, friend_list=friend_list, posts=posts)
+    return render_template('/user/detail.html', user=user, friend_list=friend_list, posts=posts, form=form)
 
 
 @app.route('/users/friend_request/<int:user_id>/', methods=['POST'])
@@ -149,13 +157,59 @@ def unfriend(user_id):
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    breakpoint()
     if matching_friends := FriendList.query.filter((FriendList.user_id == g.user.id and FriendList.friend_of_id == user_id) | (FriendList.user_id == user_id and FriendList.friend_of_id == g.user.id)).all():
       
         db.session.commit()
         flash('friend request sent!')
 
     return redirect(f"/users/{g.user.id}/detail")
+
+
+@app.route('/users/<int:user_id>/edit',methods=["GET", "POST"])
+def edit_profile(user_id):
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    bcrypt = Bcrypt()
+    user = User.query.get_or_404(user_id)
+    form = UserEditForm(obj=user)
+    if form.validate_on_submit(): 
+        # filename = user.picture.save(form.photo.data)
+        # file_url = url_for('get_file',filename=filename)
+
+        user.username = form.username.data
+        user.email = form.email.data
+        user.password = bcrypt.generate_password_hash(form.password.data).decode('UTF-8')
+        user.country = form.country.data
+        user.picture = form.picture.data
+
+        user.bio = form.bio.data
+
+        db.session.commit()
+        flash('Profile Edited')
+        return redirect(f"/users/{user.id}/detail")
+
+    return render_template('/user/edit.html',form=form,user=user)
+
+
+######################################################################################################
+# Handling Posts
+
+
+@app.route('/status/<int:post_id>/delete', methods=['POST'])
+def delete_status(post_id):
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    status = Post.query.get(post_id)
+    
+    db.session.delete(status)
+    db.session.commit()
+    flash('post deleted')
+
+    return redirect(f"/users/{g.user.id}")
+
 
 
 @app.route('/logout')

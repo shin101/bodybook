@@ -32,6 +32,7 @@ class User(db.Model):
     big_pic = db.Column(db.Text, default="/static/images/default-pic.png")
     gender = db.Column(db.Text)
     country = db.Column(db.Text)
+    bio = db.Column(db.Text)
     email = db.Column(db.Text,nullable=False,unique=True)
     password = db.Column(db.Text,nullable=False)
     posts = db.relationship('Post', backref='author')

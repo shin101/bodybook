@@ -3,11 +3,23 @@
 {% block content %}
 <a href="/logout">Log Out</a>
 <a href="/users/{{user.id}}">Feed</a>
-<h1>Profile Page</h1>
-<p>
-<img src="{{user.big_pic}}" width="200" height="200"></p>
 
-{{user.name}} {{user.last_name}}
+
+<div class="container text-center">
+
+    <img src="{{user.big_pic}}" width="200" height="200" class="img-fluid">
+
+
+<!-- if last name is not given then last name will be blank -->
+<p>{{user.name}} </p>
+<p>{{user.last_name|default(" ",true)}} </p>
+{% if g.user.id == user.id %}
+<a href="/users/{{user.id}}/edit">Edit Profile</a>
+{% endif %}
+
+{% if user.country %}<p><i class="fa-solid fa-location-dot"></i>{{user.country}}</p>{% endif %}
+{% if user.bio %}
+<p>{{user.bio}}</p> {% endif %}
 
 {% if user.id not in friend_list and user.id!=g.user.id %}
 <form method="POST" action="/users/friend_request/{{ user.id }}">
@@ -20,23 +32,25 @@
 <table border="1">
     {% for entry in friend_list %}
         <td>
-            <a href="/users/{{entry.friend_of_id}}/detail">{{entry.friend.name}}</a>
-            <img src="{{entry.friend.picture}}">
-            {{entry.friend.country}}
+            <img class="img-fluid" src="{{entry.friend.picture}}" width="50" height="50">
+            <p><a href="/users/{{entry.friend_of_id}}/detail">{{entry.friend.name}}</a></p>
+            <p><i class="fa-solid fa-location-dot"></i>{{entry.friend.country|default("",true)}}</p>
             <form method="POST" action="/users/unfriend/{{ entry.friend_of_id }}">
-        <button>Unfriend</button></form>
+        <button class="btn btn-sm">Unfriend</button></form>
         </td>
     {% endfor %}
 </table>
 {% endif %}
 
+<h2>My Posts <span class="badge badge-primary">{{user.posts | length}}</span></h2>
 
-<h2>My Posts ({{user.posts | length}})</h2>
+
 {% for post in posts %}
 <li>{{post.status}}</li>
 {% endfor %}
 
 
+</div>
 
 {% endblock %}
 

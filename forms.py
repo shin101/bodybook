@@ -1,11 +1,14 @@
 from re import L
 from wtforms import StringField, PasswordField, TextAreaField
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import InputRequired, Email, Length
 from flask_wtf import FlaskForm
+# from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 from models import db, User, connect_db
-from wtforms_alchemy import model_form_factory, ModelForm
+# from wtforms_alchemy import model_form_factory, ModelForm
 
+# photos = UploadSet('photos',IMAGES)
 
 # class ModelForm(BaseModelForm):
 #     @classmethod
@@ -34,8 +37,11 @@ class UserEditForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     email = StringField('Email', validators=[InputRequired(), Email()])
     password = PasswordField('Password', validators=[Length(min=6)])
+    # picture = FileField('(Optional) Image URL',validators=[FileAllowed(photos, 'Only images are allowed')])
     picture = StringField('(Optional) Image URL')
+    country = StringField('(Optional) Country')
     bio = TextAreaField('(Optional) Tell us about yourself')
+    
 
 
 class PostForm(FlaskForm):

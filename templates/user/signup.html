@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Sign Up</h1>
+
+<div class="container text-center">
+<h2>We are Bodybook</h2>
+<h4> Better than Facebook</h4>
+
+<h3>Sign Up</h3>
 
 <form method="POST">
   {{ form.csrf_token }}
@@ -19,11 +24,11 @@
   
     {% endfor %}
   </div>
-    <button type="submit">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   Already a member? <a href="/login">Log In</a>
 
 
 
-
+</div>
 {% endblock %}
