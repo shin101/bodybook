@@ -1,0 +1,46 @@
+
+.bodybook {
+        display: inline;
+        position: relative;
+        font: 150px Helvetica, Sans-Serif;
+        letter-spacing: -5px;
+        color: rgba(172, 243, 212, 0.913); 
+    }
+    
+.bodybook:after {
+        content: "Bodybook";
+        position: absolute; left: 10px; top: 5px;
+        color: rgba(175, 194, 217, 0.898);   
+    }
+
+.facebook {
+    animation: wiggle 3s;
+}
+
+@keyframes wiggle {
+    0% {transform: translate(5px,5px) rotate(-5deg);}
+    25% {transform: translate(5px,-5px) rotate(5deg);}
+    50% {transform: translate(5px,5px) rotate(-5deg);}
+    75% {transform: translate(5px,-5px) rotate(5deg);}
+    100% {transform: translate(5px,5px) rotate(-5deg);}
+}
+
+/* #feed {
+    font-family: great-vibes, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+} */
+
+
+
+
+#navbar {
+    background-image: linear-gradient(
+        250deg,
+        #FEE7DE 0%,
+        #FEF7DE 29%,
+        #FEDEE5 67%,
+        #F5FEDE 100%
+        );
+
+}

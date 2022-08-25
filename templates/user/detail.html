@@ -1,18 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="/logout">Log Out</a>
-<a href="/users/{{user.id}}">Feed</a>
+<!-- nav bar -->
+<nav class="navbar navbar-expand-lg navbar-light" id="navbar">
+    <a class="navbar-brand" href="#">Bodybook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/users/{{user.id}}">Feed<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Log Out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- body -->
 
 
-<div class="container text-center">
+
+
+
+<div class="container text-center m-5">
 
     <img src="{{user.big_pic}}" width="200" height="200" class="img-fluid">
 
 
 <!-- if last name is not given then last name will be blank -->
-<p>{{user.name}} </p>
-<p>{{user.last_name|default(" ",true)}} </p>
+<p>{{user.name}} {{user.last_name|default(" ",true)}} </p>
 {% if g.user.id == user.id %}
 <a href="/users/{{user.id}}/edit">Edit Profile</a>
 {% endif %}
@@ -23,7 +42,7 @@
 
 {% if user.id not in friend_list and user.id!=g.user.id %}
 <form method="POST" action="/users/friend_request/{{ user.id }}">
-    <button>Add Friend</button></form>
+    <button class="btn btn-outline-info">Add Friend</button></form>
 {% endif %}
 
 
@@ -31,6 +50,7 @@
 {% if g.user.id == user.id %}
 <table border="1">
     {% for entry in friend_list %}
+    <h2>Friends</h2>
         <td>
             <img class="img-fluid" src="{{entry.friend.picture}}" width="50" height="50">
             <p><a href="/users/{{entry.friend_of_id}}/detail">{{entry.friend.name}}</a></p>

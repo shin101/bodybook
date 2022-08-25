@@ -2,15 +2,16 @@
 
 {% block content %}
 
-<div class="container text-center">
-<h2>We are Bodybook</h2>
-<h4> Better than Facebook</h4>
+<div class="container text-center m-5">
+<h2 class="bodybook m-5">Bodybook</h2>
+<h6 class="facebook m-5"> ...It's better than Facebook</h6>
 
-<h3>Sign Up</h3>
+<h3 class="mt-5">Sign Up</h3>
 
 <form method="POST">
   {{ form.csrf_token }}
   <div>
+    
     {% for field in form if field.widget.input_type != 'hidden' %}
   
       <p>
@@ -26,7 +27,8 @@
   </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
-  Already a member? <a href="/login">Log In</a>
+  <p class="m-5">
+  Already a member? <a href="/login">Log In</a></p>
 
 
 

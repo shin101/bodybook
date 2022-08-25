@@ -17,10 +17,11 @@ from models import db, User, connect_db
 
 class CreateUserForm(FlaskForm):
     """Form for creating a new user profile"""
-    name = StringField('Name', validators=[InputRequired()],render_kw={"placeholder": "First + Last Name"})
+    name = StringField('First Name', validators=[InputRequired()])
+    last_name = StringField('Last Name', validators=[InputRequired()])
     username = StringField('Username', validators=[InputRequired()])
     email = StringField('Email', validators=[InputRequired()])
-    password = PasswordField('Password',validators=[InputRequired()],render_kw={"placeholder": "Must be at least 6 characters"})
+    password = PasswordField('Password',validators=[InputRequired(),Length(min=6)])
 
 class PostForm(FlaskForm):
     """Form for adding or editing posts"""

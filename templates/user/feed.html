@@ -1,14 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- nav bar -->
+<nav class="navbar navbar-expand-lg navbar-light" id="navbar">
+    <a class="navbar-brand" href="#">Bodybook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/users/{{g.user.id}}/detail"> Profile <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Log Out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- body -->
 
 
-
-<a href="/logout">Log Out</a>
-<a href="/users/{{g.user.id}}/detail">Profile</a>
-
-<div class="container text-center">
-<h1>Feed</h1>
+<div class="container text-center m-5">
+<h1 id="feed">Feed</h1>
 
 <form method="POST">
     {{ form.csrf_token }}
@@ -20,7 +35,8 @@
 
 
 {% for post in posts %}
-<li>
+<ul class="list-group list-group-flush">
+<li class="list-group-item">
     <img src="{{post.author.picture}}" alt="user profile photo" width="30" height="30">
     <a href="/users/{{post.author.id}}/detail">{{post.author.name}}</a>
     <p>{{post.status}}</p>
@@ -29,14 +45,15 @@
     <button action="/status/<int:post_id>/delete" class="btn btn-sm">Delete</button>
     {% endif %}
 </li>
+</ul>
 {% endfor %}
 
 </div>
-
+<!-- 
 <div class="container text-right">
 <h3>Suggested Friends</h3>
 {% for user in users %}
 {{user.name}}
-{% endfor %}
+{% endfor %} -->
 </div>
 {% endblock %}

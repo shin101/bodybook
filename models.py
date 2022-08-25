@@ -38,13 +38,13 @@ class User(db.Model):
     posts = db.relationship('Post', backref='author')
 
     @classmethod
-    def signup(cls, name, username,email, password):
+    def signup(cls, name, last_name, username,email, password):
         """Sign up user.
 
         Hashes password and adds user to system.
         """
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
-        user = User(name=name, username=username, email=email, password=hashed_pwd)
+        user = User(name=name, last_name=last_name, username=username, email=email, password=hashed_pwd)
         db.session.add(user)
         return user
     
