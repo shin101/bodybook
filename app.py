@@ -27,7 +27,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 connect_db(app)
-setup()
+# setup()
 
 ##############################################################################
 
@@ -157,11 +157,12 @@ def unfriend(user_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
+    
 
-    if matching_friends := FriendList.query.filter((FriendList.user_id == g.user.id and FriendList.friend_of_id == user_id) | (FriendList.user_id == user_id and FriendList.friend_of_id == g.user.id)).all():
-      
-        db.session.commit()
-        flash('friend request sent!')
+    db.session.delete(FriendList.query.filter_by(user_id=g.user.id, friend_of_id=user_id).first())
+    db.session.delete(FriendList.query.filter_by(user_id=user_id, friend_of_id=g.user.id).first())
+    db.session.commit()
+    flash('you are no longer friends with this person.')
 
     return redirect(f"/users/{g.user.id}/detail")
 
@@ -193,11 +194,26 @@ def edit_profile(user_id):
     return render_template('/user/edit.html',form=form,user=user)
 
 
+@app.route('/delete_account/<user_id>/', methods=['GET'])
+def delete_account(user_id):
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    user = User.query.get(user_id)
+    
+    db.session.delete(user)
+    db.session.commit()
+    flash('user deleted')
+    
+    g.user = None
+    return redirect("/")
+
 ######################################################################################################
 # Handling Posts
 
 
-@app.route('/status/<int:post_id>/delete', methods=['POST'])
+@app.route('/status/<int:post_id>/delete', methods=['GET'])
 def delete_status(post_id):
     if not g.user:
         flash("Access unauthorized.", "danger")

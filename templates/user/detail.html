@@ -49,8 +49,8 @@
 
 {% if g.user.id == user.id %}
 <table border="1">
-    {% for entry in friend_list %}
     <h2>Friends</h2>
+    {% for entry in friend_list %}
         <td>
             <img class="img-fluid" src="{{entry.friend.picture}}" width="50" height="50">
             <p><a href="/users/{{entry.friend_of_id}}/detail">{{entry.friend.name}}</a></p>
@@ -62,7 +62,7 @@
 </table>
 {% endif %}
 
-<h2>My Posts <span class="badge badge-primary">{{user.posts | length}}</span></h2>
+<h2 class="m-4">My Posts <span class="badge badge-primary">{{user.posts | length}}</span></h2>
 
 
 {% for post in posts %}

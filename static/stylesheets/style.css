@@ -25,14 +25,24 @@
     100% {transform: translate(5px,5px) rotate(-5deg);}
 }
 
-/* #feed {
-    font-family: great-vibes, sans-serif;
+#feed {
+    font-family: 'Great Vibes', cursive, sans-serif;
     font-style: normal;
     font-weight: 400;
-} */
+    font-size : 8rem;
+    margin-bottom:3rem;
+}
 
 
+.input {
+    width:50%;
+    background-color: #FEF0FA;
+    font-style: italic;
+}
 
+#input-button {
+   background-color: #FEFBF0;
+}
 
 #navbar {
     background-image: linear-gradient(

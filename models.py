@@ -39,7 +39,7 @@ class User(db.Model):
 
     @classmethod
     def signup(cls, name, last_name, username,email, password):
-        """Sign up user.
+        """Sign up user
 
         Hashes password and adds user to system.
         """
@@ -56,12 +56,20 @@ class User(db.Model):
         else:
             return False
 
+
+# class UserPost(db.Model):
+#     __table__ = 'userposts'
+#     id = db.Column(db.Integer, primary_key=True)
+
+
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(500),nullable=False)
-    author_id = db.Column(db.Integer,db.ForeignKey('users.id', ondelete='cascade'),nullable=False)
+    author_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False,default=datetime.utcnow())
+
 
 class FriendList(db.Model):
     __tablename__ = 'friend_list'

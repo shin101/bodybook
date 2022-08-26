@@ -38,14 +38,11 @@
           {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
 
-
-
-
         <button class="btn btn-primary m-3">Edit Profile</button>
 
     </form>
 
-<button class="btn btn-danger">Delete Account (currently unavailable)</button>
+<a href="/delete_account/{{user.id}}" method="GET">Delete Account</a>
 
 </div>
 
