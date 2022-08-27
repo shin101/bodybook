@@ -24,7 +24,6 @@ app.config['SECRET_KEY'] = 'capstone_project'
 
 
 connect_db(app)
-# setup()
 
 ##############################################################################
 

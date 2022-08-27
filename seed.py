@@ -26,3 +26,5 @@ def setup():
 
     db.session.add_all(posts)
     db.session.commit()
+
+setup()
