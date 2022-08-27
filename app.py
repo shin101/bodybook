@@ -16,8 +16,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = 'capstone_project'
 
-db.create_all()
 connect_db(app)
+db.create_all()
 # setup()
 
 ##############################################################################
