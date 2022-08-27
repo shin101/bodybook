@@ -5,8 +5,7 @@ from flask_mail import Message
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 import os
-
-
+from seed import setup
 
 CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
@@ -18,6 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'capstone_project'
 
 connect_db(app)
+setup()
 
 ##############################################################################
 
