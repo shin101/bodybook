@@ -5,7 +5,6 @@ from flask_mail import Message
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 import os
-from seed import setup
 
 
 
@@ -17,11 +16,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = 'capstone_project'
-# app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
-
-
-# configure_uploads(app, photos)
-
 
 connect_db(app)
 
