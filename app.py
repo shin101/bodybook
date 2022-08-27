@@ -13,7 +13,6 @@ CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
 
 
-
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///bodybook')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
@@ -232,10 +231,6 @@ def logout():
     do_logout()
     flash("You have been logged out")
     return redirect ('/login')
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
 
 ##############################################################################
 
