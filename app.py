@@ -17,8 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'capstone_project'
 
 connect_db(app)
-db.create_all()
-# setup()
+setup()
 
 ##############################################################################
 

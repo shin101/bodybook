@@ -11,7 +11,7 @@ def setup():
     bcrypt = Bcrypt()
 
     users = []
-    for i in range(0,3):
+    for i in range(0,4):
         res = requests.get('https://randomuser.me/api/')
         data = res.json()['results'][0]
         users.append(User(name=data['name']['first'],last_name=data['name']['last'], username=data['login']['username'],password=bcrypt.generate_password_hash(data['login']['password']).decode('UTF-8'), picture=data['picture']['thumbnail'], big_pic=data['picture']['large'], gender=data['gender'],country=data['location']['country'],email=data['email']))
@@ -22,7 +22,9 @@ def setup():
     post1 = Post(status='Feeling hungry',author_id=users[0].id)
     post2 = Post(status='Bored',author_id=users[1].id)
     post3 = Post(status='Who wants to hang out?',author_id=users[1].id)
-    posts = [post1, post2, post3]
+    post4 = Post(status='moved to LA =D',author_id=users[2].id)
+    post5 = Post(status='Lost my phone!!!!',author_id=users[3].id)
+    posts = [post1, post2, post3, post4, post5]
 
     db.session.add_all(posts)
     db.session.commit()
