@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, g, session, url_for
 from models import db, connect_db, User, Post, FriendList
 from forms import CreateUserForm, LoginForm, PostForm, UserEditForm
-from flask_mail import Message
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 import os
