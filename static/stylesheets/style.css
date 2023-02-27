@@ -1,4 +1,21 @@
-
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+  }
+  
+  #video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+  }
+  
 
 .animated-text {
         display: inline;
@@ -9,7 +26,7 @@
     }
     
 .animated-text:after {
-        content: "Bodybook";
+        content: "Bookface";
         position: absolute; left: 10px; top: 5px;
         color: rgba(175, 194, 217, 0.898);   
     }

@@ -2,8 +2,16 @@
 
 {% block content %}
 
-<div class="container text-center m-5">
-<h2 class="animated-text">Bodybook</h2>
+<div class="container text-center">
+
+  <div id="background-video">
+    <video autoplay muted loop id="video-bg">
+      <source src="{{ url_for('static', filename='images/video.mp4') }}" type="video/mp4">
+    </video>
+  </div>
+  
+
+<h2 class="animated-text">Bookface</h2>
 <h6 class="facebook m-5"> ...It's better than Facebook</h6>
 
 <h3 class="mt-5">Sign Up</h3>
