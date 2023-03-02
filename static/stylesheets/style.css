@@ -1,3 +1,37 @@
+html, body {
+  height: 100%;
+
+}
+
+.signup-form {
+  background-color: #F8F8F8;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 20px;
+
+  
+}
+
+
+
+/* .login {
+  background: linear-gradient(to bottom right, #faf8f6, #f4f5ec, #f5ddde, #f8e4f0, #ead2f5, #c5d4f6, #eaf8f6);
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
+
+
+label {
+  margin-top: 10px;
+}
+
+
+
+
+
+
 #background-video {
     position: fixed;
     right: 0;

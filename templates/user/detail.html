@@ -18,10 +18,12 @@
 {% if user.bio %}
 <p>{{user.bio}}</p> {% endif %}
 
+
 {% if user.id not in friend_list and user.id!=g.user.id %}
 <form method="POST" action="/users/friend_request/{{ user.id }}">
     <button class="btn btn-outline-info">Add Friend</button></form>
 {% endif %}
+
 
 
 
